@@ -297,3 +297,12 @@ ExecStartPre=/bin/sleep 20
 [Install]
 WantedBy=multi-user.target default.target
 ```
+
+# run the pod
+```
+systemctl --user daemon-reload && \
+systemctl --user start opencloud-pod.service
+```
+
+# Info:
+Don't forget to open the ports on the Firewall and add the services (opencloud_server, opencloud_collaboration, opencloud_onlyoffice) to the reverse proxy and set up the DNS provider.
