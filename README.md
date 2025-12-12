@@ -271,6 +271,7 @@ Pod=opencloud.pod
 AutoUpdate=registry
 AddHost=opencloud.domain.tld:{your_host_IP}
 AddHost=onlyoffice.domain.tld:{your_host_IP}
+AddHost=wopi.domain.tld:{your_host_IP}
 Environment=COLLABORATION_GRPC_ADDR=0.0.0.0:9301
 Environment=COLLABORATION_HTTP_ADDR=0.0.0.0:9300
 Environment=MICRO_REGISTRY=nats-js-kv
