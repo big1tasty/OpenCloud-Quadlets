@@ -18,27 +18,28 @@ podman unshare chown -R $USER:$USER /container/opencloud
 ```yaml
 directives:
   child-src:
-    - 'self'
+    - '''self'''
   connect-src:
-    - 'self'
+    - '''self'''
+    - 'blob'
     - 'https://keycloak.domain.tld'
     - 'https://onlyoffice.domain.tld'
     - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
     - 'https://update.opencloud.eu/'
   default-src:
-    - 'none'
+    - '''none'''
   font-src:
-    - 'self'
+    - '''self'''
   frame-ancestors:
-    - 'self'
+    - '''self'''
   frame-src:
-    - 'self'
+    - '''self'''
     - 'https://keycloak.domain.tld'
     - 'https://onlyoffice.domain.tld'
     - 'https://embed.diagrams.net/'
     - 'https://docs.opencloud.eu'
   img-src:
-    - 'self'
+    - '''self'''
     - 'data:'
     - 'blob:'
     - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
@@ -46,19 +47,19 @@ directives:
     # In contrary to bash and docker the default is given after the | character
     - 'https://onlyoffice.domain.tld/'
   manifest-src:
-    - 'self'
+    - '''self'''
   media-src:
-    - 'self'
+    - '''self'''
   object-src:
-    - 'self'
+    - '''self'''
     - 'blob:'
   script-src:
-    - 'self'
-    - 'unsafe-inline'
+    - '''self'''
+    - '''unsafe-inline'''
     - 'https://keycloak.domain.tld'
   style-src:
-    - self'
-    - 'unsafe-inline'
+    - '''self'''
+    - '''unsafe-inline'''
 ``` 
 
 ## keycloak: 
