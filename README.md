@@ -165,7 +165,7 @@ Environment=PROXY_TLS=false
 Environment=OC_INSECURE=false
 Environment=PROXY_ENABLE_BASIC_AUTH=false
 Environment=IDM_CREATE_DEMO_USERS=false
-Environment=OC_OIDC_ISSUER="https://keyc.domain.tld/realms/GRBR"
+Environment=OC_OIDC_ISSUER="https://keyc.domain.tld/realms/REALMNAME"
 Environment=WEB_OIDC_CLIENT_ID=OpenCloudWeb
 Environment=OC_EXCLUDE_RUN_SERVICES=idp
 Environment=PROXY_OIDC_REWRITE_WELLKNOWN="true"
