@@ -223,7 +223,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target default.target
 ```
-## onlyoffice
+# onlyoffice
 ## Enable Docx for Onlyoffice
 ```bash
 nano /container/opencloud/config/app-registry.yaml
@@ -277,7 +277,7 @@ app_registry:
       allow_creation: false
 ```
 
-
+## Onlyoffice Container
 ```bash
 nano /etc/containers/systemd/users/1000/opencloud_onlyoffice.container
 ```
