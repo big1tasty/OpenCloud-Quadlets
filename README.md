@@ -1,6 +1,6 @@
 # OpenCloud-Quadlets
 This is an example of an OpenCloud setup using Podman Quadlets.
-The result of this setup is a fully functional OpenCloud server with an advanced search service (Tika) and OnlyOffice integration.
+The result of this setup is a fully functional OpenCloud server with an advanced search service (Tika) and Euro-Office integration.
 Authentication is handled by Keycloak.
 This example assumes that a Keycloak instance is already up and running.
 
@@ -25,7 +25,7 @@ directives:
     - 'https://opencloud.domain.tld'
     - 'https://keyc.domain.tld'
     - 'https://collabora.domain.tld'
-    - 'https://onlyoffice.domain.tld'
+    - 'https://euro-office.domain.tld'
     - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
     - 'https://update.opencloud.eu/'
   default-src:
@@ -39,7 +39,7 @@ directives:
     - 'blob:'
     - 'https://embed.diagrams.net/'
     - 'https://collabora.domain.tld'
-    - 'https://onlyoffice.domain.tld'
+    - 'https://euro-office.domain.tld'
     - 'https://embed.diagrams.net/'
     - 'https://docs.opencloud.eu'
   img-src:
@@ -49,7 +49,7 @@ directives:
     - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
     - 'https://tile.openstreetmap.org/'
     - 'https://collabora.domain.tld'
-    - 'https://onlyoffice.domain.tld/'
+    - 'https://euro-office.domain.tld/'
   manifest-src:
     - '''self'''
   media-src:
@@ -78,8 +78,8 @@ enable:
 
 ## create secrets 
 ```bash
-printf "PRTORONMAIL" | podman secret create opencloud_smtp_pw - && \
-printf "secretstring" | podman secret create opencloud_collabora_pw - 66 \
+printf "secretstring" | podman secret create opencloud_smtp_pw - && \
+printf "secretstring" | podman secret create opencloud_collabora_pw - && \
 printf "secretstring" | podman secret create OO_JWT_SECRET -
 ```
 
@@ -109,7 +109,7 @@ PublishPort=9300:9300
 PublishPort=8084:80
 PublishPort=9200:9200
 AddHost=opencloud.domain.tld:host-gateway
-AddHost=onlyoffice.domain.tld:host-gateway
+AddHost=euro-office.domain.tld:host-gateway
 AddHost=wopi.domain.tld:host-gateway
 AddHost=keyc.domain.tld:host-gateway
 
@@ -188,7 +188,7 @@ Environment=GATEWAY_GRPC_ADDR=0.0.0.0:9142
 Environment=NATS_NATS_HOST=0.0.0.0
 Environment=NATS_NATS_PORT=9233
 #Collaboration
-Environment=COLLABORA_DOMAIN=onlyoffice.domain.tld
+Environment=COLLABORA_DOMAIN=euro-office.domain.tld
 Environment=GRAPH_AVAILABLE_ROLES="b1e2218d-eef8-4d4c-b82d-0f1a1b48f3b5,a8d5fe5e-96e3-418d-825b-534dbdf22b99,fb6c3e19-e378-47e5-b277-9732f9de6e21,58c63c02-1d89-4572-916a-870abc5a1b7d,2d00ce52-1fc2-4dbc-8b95-a73b73395f5a,1c996275-f1c9-4e71-abdf-a42f6495e960,312c0871-5ef7-4b3a-85b6-0e4074c64049,aa97fe03-7980-45ac-9e50-b325749fd7e6"
 Environment=FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR=eu.opencloud.api.collaboration
 Secret=OO_JWT_SECRET,type=env,target=OC_JWT_SECRET
@@ -223,8 +223,8 @@ Restart=always
 [Install]
 WantedBy=multi-user.target default.target
 ```
-# onlyoffice
-## Enable Docx for Onlyoffice
+# euro-office
+## Enable Docx for Euro-Office
 ```bash
 nano /container/opencloud/config/app-registry.yaml
 ```
@@ -244,21 +244,21 @@ app_registry:
       extension: docx
       name: Document
       description: Microsoft Word document
-      default_app: OnlyOffice
+      default_app: Euro-Office
       allow_creation: true
 
     - mime_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
       extension: xlsx
       name: Spreadsheet
       description: Microsoft Excel document
-      default_app: OnlyOffice
+      default_app: Euro-Office
       allow_creation: true
 
     - mime_type: application/vnd.openxmlformats-officedocument.presentationml.presentation
       extension: pptx
       name: Presentation
       description: Microsoft PowerPoint document
-      default_app: OnlyOffice
+      default_app: Euro-Office
       allow_creation: true
 
     # --- OpenDocument Formats (Explicitly Disabled) ---
@@ -266,29 +266,29 @@ app_registry:
       extension: odt
       name: OpenDocument Text
       description: OpenDocument text document
-      default_app: OnlyOffice
+      default_app: Euro-Office
       allow_creation: false
 
     - mime_type: application/vnd.oasis.opendocument.spreadsheet
       extension: ods
       name: OpenDocument Spreadsheet
       description: OpenDocument spreadsheet document
-      default_app: OnlyOffice
+      default_app: Euro-Office
       allow_creation: false
 ```
 
-## Onlyoffice Container
+## Euro-Office Container
 ```bash
-nano /etc/containers/systemd/users/1000/opencloud_onlyoffice.container
+nano /etc/containers/systemd/users/1000/opencloud_euro-office.container
 ```
 
 ```bash
 [Unit]
-Description=Opencloud Onlyoffice Service
+Description=Opencloud Euro-Office Service
 
 [Container]
-ContainerName=opencloud_onlyoffice
-Image=docker.io/onlyoffice/documentserver:latest
+ContainerName=opencloud_euro-office
+Image=ghcr.io/euro-office/documentserver:latest
 Pod=opencloud.pod
 AutoUpdate=registry
 Environment=JWT_ENABLED=true
@@ -311,8 +311,8 @@ nano /etc/containers/systemd/users/1000/opencloud_collaboration.container
 ```bash
 [Unit]
 Description=Opencloud Collaboration Service
-After=opencloud_onlyoffice.service
-Requires=opencloud_onlyoffice.service
+After=opencloud_euro-office.service
+Requires=opencloud_euro-office.service
 
 [Container]
 Memory=3000M
@@ -325,10 +325,10 @@ Environment=COLLABORATION_HTTP_ADDR=0.0.0.0:9300
 Environment=MICRO_REGISTRY=nats-js-kv
 Environment=MICRO_REGISTRY_ADDRESS=opencloud_server:9233
 Environment=COLLABORATION_WOPI_SRC=https://wopi.domain.tld
-Environment=COLLABORATION_APP_NAME=OnlyOffice
-Environment=COLLABORATION_APP_PRODUCT=ConlyOffice
-Environment=COLLABORATION_APP_ADDR=https://onlyoffice.domain.tld
-Environment=COLLABORATION_APP_ICON=https://onlyoffice.domain.tld/favicon.ico
+Environment=COLLABORATION_APP_NAME=Euro-Office
+Environment=COLLABORATION_APP_PRODUCT=OnlyOffice
+Environment=COLLABORATION_APP_ADDR=https://euro-office.domain.tld
+Environment=COLLABORATION_APP_ICON=https://euro-office.domain.tld/favicon.ico
 Secret=OO_JWT_SECRET,type=env,target=OC_JWT_SECRET
 Environment=COLLABORATION_APP_INSECURE=false
 Environment=COLLABORATION_CS3API_DATAGATEWAY_INSECURE=false
@@ -352,4 +352,4 @@ systemctl --user start opencloud-pod.service
 ```
 
 # Info:
-Don't forget to open the ports on the Firewall and add the services (opencloud_server, opencloud_collaboration, opencloud_onlyoffice) to the reverse proxy and set up the DNS provider.
+Don't forget to open the ports on the Firewall and add the services (opencloud_server, opencloud_collaboration, opencloud_euro-office) to the reverse proxy and set up the DNS provider.
