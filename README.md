@@ -154,7 +154,7 @@ Requires=opencloud_tika.service
 
 [Container]
 ContainerName=opencloud_server
-Image=docker.io/opencloudeu/opencloud:7
+Image=docker.io/opencloudeu/opencloud:9
 Pod=opencloud.pod
 AutoUpdate=registry
 Environment=OC_URL=https://opencloud.domain.tld
@@ -317,7 +317,7 @@ Requires=opencloud_euro-office.service
 [Container]
 Memory=3000M
 ContainerName=opencloud_collaboration
-Image=docker.io/opencloudeu/opencloud:7
+Image=docker.io/opencloudeu/opencloud:9
 Pod=opencloud.pod
 AutoUpdate=registry
 Environment=COLLABORATION_GRPC_ADDR=0.0.0.0:9301
